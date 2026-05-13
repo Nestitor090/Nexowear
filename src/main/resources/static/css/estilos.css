@@ -1,0 +1,260 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+section.container {
+    flex: 1;
+}
+/* --- NAVBAR (Diseño Elegante) --- */
+.navbar {
+    background-color: #000 !important;
+    padding: 12px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 22px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.nav-link {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 15px !important;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+    opacity: 0.7;
+}
+
+/* --- BANNER PRINCIPAL --- */
+.banner {
+    min-height: 60vh; 
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                url('https://images.unsplash.com/photo-1521334884684-d80222895322?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.banner h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem); /* Tamaño fluido para móviles */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* --- MODAL (Login/Registro) --- */
+.modal-content {
+    border-radius: 20px;
+    border: none;
+}
+
+.modal-body h2 {
+    letter-spacing: 2px;
+}
+
+.form-control {
+    border-radius: 10px;
+    padding: 12px;
+    background-color: #f4f4f4;
+    border: 1px solid transparent;
+}
+
+.form-control:focus {
+    background-color: #fff;
+    border-color: #000;
+    box-shadow: none;
+}
+
+/* --- PRODUCTOS (Cards) --- */
+.producto {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.producto:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 15px 35px rgba(0,0,0,0.15);
+}
+
+.producto-img {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    border-radius: 15px 15px 0 0;
+}
+
+.producto-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.6s ease;
+}
+.producto:hover .producto-img img {
+    transform: scale(1.05);
+}
+
+/* Alineación de los botones */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+/* --- BOTONES --- */
+.btn-dark {
+    border-radius: 25px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.btn-light {
+    border-radius: 30px;
+    padding: 12px 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.btn-outline-light {
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-size: 13px;
+    border-width: 2px;
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: #000;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-top: auto; /* Empuje final para asegurar la posición */
+}
+
+footer .text-muted {
+    color: #666 !important;
+}
+
+/* --- RESPONSIVIDAD EXTRA --- */
+@media (max-width: 768px) {
+    .banner {
+        padding: 60px 0;
+    }
+    .navbar-nav {
+        padding: 20px 0;
+        text-align: center;
+    }
+}
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background-color: #fff; /* Fondo blanco para que resalte en el nav negro */
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.avatar-circle:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+/* Animación para que la nubecita llame la atención */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-10px);}
+    60% {transform: translateY(-5px);}
+}
+
+.fixed-bottom span.badge {
+    animation: bounce 3s infinite;
+    background-color: #000 !important;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #000 !important;
+}
+
+.nav-pills .nav-link {
+    color: #666;
+}
+
+/* Quitar el borde de enfoque que pone Bootstrap */
+.navbar-toggler:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+/* Estructura de las líneas del menú */
+.hamburger-icon {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: white; /* Color de las líneas */
+    border-radius: 9px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Animación: la línea del medio se hace más corta (estilo moderno) */
+.navbar-toggler[aria-expanded="true"] .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger-icon span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger-icon span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background-color: rgba(0, 0, 0, 0.95); /* Fondo oscuro semi-transparente */
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 15px;
+        text-align: center;
+        backdrop-filter: blur(10px); /* Efecto de vidrio esmerilado */
+    }
+    
+    .nav-link {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}

@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f2f2f2;
+}
+
+/* CONTENEDOR */
+.login-container {
+    display: flex;
+    width: 900px;
+    height: 500px;
+    margin: 80px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 15px 40px rgba(0,0,0,0.2);
+}
+
+/* LADO IZQUIERDO */
+.login-left {
+    width: 50%;
+    background: white;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* LOGO */
+.logo {
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+/* INPUTS */
+.login-left input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+/* BOTÓN */
+.login-left button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: black;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.login-left button:hover {
+    background: #333;
+}
+
+/* LADO DERECHO */
+.login-right {
+    width: 50%;
+    background: url('https://images.unsplash.com/photo-1521334884684-d80222895322') center/cover no-repeat;
+    position: relative;
+}
+
+/* OVERLAY OSCURO */
+.overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    transition: 0.3s;
+}
+
+input {
+    margin-bottom: 12px;
+}
+
+button {
+    margin-top: 10px;
+}
