@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - NEXO WEAR</title>
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .sidebar {
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            min-height: 100vh;
+        }
+        .nav-link-admin {
+            color: #495057;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-link-admin:hover, .nav-link-admin.active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .card-custom {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+        }
+        .table-custom th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        .producto-img-td {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- BARRA LATERAL (SIDEBAR) -->
+        <nav class="col-md-3 col-lg-2 sidebar d-md-block p-3">
+            <div class="mb-4 px-2">
+                <h5 class="fw-bold tracking-tight m-0">NEXO WEAR</h5>
+                <span class="text-muted" style="font-size: 11px; font-weight: 600;">PANEL DE CONTROL</span>
+            </div>
+
+            <div class="text-muted small fw-bold px-2 mb-2 text-uppercase" style="font-size: 10px; letter-spacing: 0.5px;">Inventario</div>
+            <ul class="nav flex-column gap-1 mb-4">
+                <li><a href="/admin/dashboard" class="nav-link-admin active"><i class="bi bi-box-seam"></i> Productos</a></li>
+            </ul>
+
+            <div class="text-muted small fw-bold px-2 mb-2 text-uppercase" style="font-size: 10px; letter-spacing: 0.5px;">Gestión Comercial</div>
+            <ul class="nav flex-column gap-1 mb-4">
+                <li><a href="#" class="nav-link-admin"><i class="bi bi-receipt"></i> Ventas / Pedidos <span class="badge bg-danger ms-auto px-2" style="font-size: 9px;">Módulo</span></a></li>
+                <li><a href="#" class="nav-link-admin"><i class="bi bi-people"></i> Clientes Registrados <span class="badge bg-danger ms-auto px-2" style="font-size: 9px;">Módulo</span></a></li>
+                <li><a href="#" class="nav-link-admin"><i class="bi bi-graph-up-arrow"></i> Reportes Financieros <span class="badge bg-danger ms-auto px-2" style="font-size: 9px;">Módulo</span></a></li>
+            </ul>
+
+            <div class="text-muted small fw-bold px-2 mb-2 text-uppercase" style="font-size: 10px; letter-spacing: 0.5px;">Accesos rápidos</div>
+            <ul class="nav flex-column gap-1">
+                <li><a href="/" class="nav-link-admin"><i class="bi bi-shop"></i> Ver Tienda Virtual</a></li>
+                <li><a href="#" onclick="logoutAdmin()" class="nav-link-admin text-danger"><i class="bi bi-box-arrow-left"></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold m-0">Gestión de Inventario</h2>
+                    <p class="text-muted small m-0">Agrega, edita o elimina los productos del catálogo de Nexo Wear.</p>
+                </div>
+                <button class="btn btn-dark d-flex align-items-center gap-2" data-bs-toggle="offcanvas" data-bs-target="#panelProducto">
+                    <i class="bi bi-plus-lg"></i> Nuevo Producto
+                </button>
+            </div>
+
+            <!-- CONTROLADORES DE BÚSQUEDA Y FILTRADO AVANZADO -->
+            <div class="card card-custom p-3 mb-3 shadow-sm">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                            <input type="text" id="filtroTexto" class="form-control border-start-0" placeholder="Buscar por nombre o ID...">
+                        </div>
+                    </div>
+                    <!-- Filtro Categoría Modificado -->
+                    <div class="col-md-3">
+                        <select id="filtroCategoria" class="form-select">
+                            <option value="">Todas las Categorías</option>
+                            <option value="hombre">Hombre</option>
+                            <option value="mujer">Mujer</option>
+                            <option value="ninos">Niños</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filtroStock" class="form-select">
+                            <option value="">Cualquier cantidad de Stock</option>
+                            <option value="agotado">Agotados (Stock 0)</option>
+                            <option value="ultimas">Últimas unidades (1 a 3)</option>
+                            <option value="disponible">Suficiente (Más de 5)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-secondary w-100" onclick="limpiarFiltros()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!-- TABLA DE PRODUCTOS -->
+            <div class="card card-custom p-3 shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-custom align-middle m-0">
+                        <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Stock Actual</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tablaProductosBody">
+                        <tr th:each="prod : ${productos}" class="producto-fila"
+                            th:data-nombre="${prod.nombre}"
+                            th:data-categoria="${prod.categoria}"
+                            th:data-stock="${prod.stock != null ? prod.stock : 0}">
+                            <td>
+                                <img th:src="@{'/img/' + ${prod.imagen}}" class="producto-img-td" alt="item">
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-dark th-nombre-txt" th:text="${prod.nombre}">Nombre</div>
+                                <small class="text-muted" th:text="'ID: ' + ${prod.id}"></small>
+                            </td>
+                            <td><span class="badge bg-light text-dark text-uppercase th-cat-badge" th:text="${prod.categoria}">Categoría</span></td>
+                            <td class="fw-bold text-dark" th:text="'S/ ' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">S/ 0.00</td>
+                            <td>
+                                <span th:if="${prod.stock == null || prod.stock == 0}" class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5 fw-bold text-uppercase" style="font-size: 11px;">
+                                    <i class="bi bi-x-circle-fill me-1"></i> Agotado
+                                </span>
+                                <span th:if="${prod.stock > 0 && prod.stock <= 3}" class="badge bg-warning-subtle text-warning-emphasis border border-warning px-2.5 py-1.5 fw-bold" style="font-size: 11px;">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Últimos <span th:text="${prod.stock}"></span> unidades
+                                </span>
+                                <span th:if="${prod.stock > 3}" class="text-muted small fw-semibold" th:text="${prod.stock} + ' unidades'"></span>
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary me-1" th:onclick="'abrirEditarProducto(' + ${prod.id} + ')'">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" th:onclick="'eliminarProducto(' + ${prod.id} + ')'">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr id="noResultadosFila" style="display: none;">
+                            <td colspan="6" class="text-center py-5 text-muted">No se encontraron productos con los criterios de búsqueda seleccionados.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- SLIDE PANEL LATERAL (OFFCANVAS) PARA AGREGAR PRODUCTOS -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="panelProducto" style="width: 450px;">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold" id="offcanvasRightLabel">Agregar Nuevo Producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form id="formNuevoProducto">
+            <!-- 🌟 Campo oculto para identificar si estamos editando -->
+            <input type="hidden" id="prodId" name="id">
+
+            <div class="mb-3">
+                <label class="form-label fw-medium small">Nombre del Producto</label>
+                <input type="text" class="form-control" id="prodNombre" required placeholder="Ej: Casaca Bomber Premium">
+            </div>
+
+            <!-- Formulario Categoría Modificado -->
+            <div class="mb-3">
+                <label class="form-label fw-medium small">Categoría</label>
+                <select class="form-select" id="prodCategoria" required>
+                    <option value="" disabled selected>Selecciona una categoría...</option>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Mujer</option>
+                    <option value="ninos">Niños</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium small">Precio (S/)</label>
+                    <input type="number" step="0.01" class="form-control" id="prodPrecio" required placeholder="0.00" min="0.1">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium small">Cantidad en Stock</label>
+                    <input type="number" class="form-control" id="prodStock" required placeholder="Ej: 10" min="0" value="1">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-medium small">Nombre del archivo de imagen</label>
+                <input type="text" class="form-control" id="prodImagen" required placeholder="ejemplo.jpg">
+                <div class="form-text fs-7">Asegúrate de que la foto esté guardada físicamente dentro de /static/img/</div>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100 mt-3 py-2 fw-semibold">Guardar Producto</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const token = localStorage.getItem('jwtToken');
+    const rol = localStorage.getItem('usuarioRol');
+    if (!token || rol !== "ADMIN") {
+        alert("Acceso denegado. Se requieren credenciales de Administrador.");
+        window.location.href = "/";
+    }
+});
+
+function logoutAdmin() {
+    localStorage.removeItem('usuarioLogueado');
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('usuarioRol');
+    window.location.href = "/";
+}
+
+// LÓGICA UNIFICADA: Crear y Editar en un mismo evento
+const formNuevoProducto = document.getElementById('formNuevoProducto');
+if (formNuevoProducto) {
+    formNuevoProducto.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const id = document.getElementById('prodId').value;
+        const token = localStorage.getItem('jwtToken');
+        const url = id ? `/admin/productos/actualizar/${id}` : '/admin/productos/agregar';
+        const method = id ? 'PUT' : 'POST';
+
+   const productoData = {
+    nombre: document.getElementById('prodNombre').value,
+    categoria: document.getElementById('prodCategoria').value,
+    precio: parseFloat(document.getElementById('prodPrecio').value),
+    stock: parseInt(document.getElementById('prodStock').value) || 0,
+    // Asegúrate de que esto no sea nulo. Si el input está vacío, envía un string vacío ""
+    imagen: document.getElementById('prodImagen') ? document.getElementById('prodImagen').value : "",
+    destacado: false,
+    nuevo: false
+};
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + (token ? token.trim() : "")
+                },
+                body: JSON.stringify(productoData)
+            });
+
+            if (response.ok) {
+                alert("Operación exitosa");
+                location.reload();
+            } else {
+                const resultado = await response.json();
+                alert("Error: " + (resultado.message || "No se pudo procesar la solicitud."));
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Hubo un problema al procesar la solicitud.");
+        }
+    });
+}
+
+// Función para abrir panel en modo edición
+function abrirEditarProducto(id) {
+    const token = localStorage.getItem('jwtToken');
+
+    fetch(`/admin/productos/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + (token ? token.trim() : ""),
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(async res => {
+        if (!res.ok) throw new Error("Error al obtener datos");
+        return res.json();
+    })
+    .then(data => {
+        document.getElementById('prodId').value = data.id;
+        document.getElementById('prodNombre').value = data.nombre;
+        document.getElementById('prodCategoria').value = data.categoria;
+        document.getElementById('prodPrecio').value = data.precio;
+        document.getElementById('prodStock').value = data.stock;
+
+        document.querySelector('#panelProducto .offcanvas-title').innerText = "Editar Producto";
+        const panel = new bootstrap.Offcanvas(document.getElementById('panelProducto'));
+        panel.show();
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("No se pudo cargar el producto. Verifica tus permisos.");
+    });
+}
+
+// Función para abrir panel en modo nuevo
+function abrirNuevoProducto() {
+    // 1. Limpiar manualmente cada campo del formulario
+    document.getElementById('prodId').value = '';
+    document.getElementById('prodNombre').value = '';
+    document.getElementById('prodCategoria').value = '';
+    document.getElementById('prodPrecio').value = '';
+    document.getElementById('prodStock').value = '';
+
+    // Si existe el campo de imagen, límpialo también
+    const imgField = document.getElementById('prodImagen');
+    if (imgField) imgField.value = '';
+
+    // 2. Cambiar el título
+    document.querySelector('#panelProducto .offcanvas-title').innerText = "Nuevo Producto";
+
+    // 3. Abrir el panel
+    const panel = new bootstrap.Offcanvas(document.getElementById('panelProducto'));
+    panel.show();
+}
+async function eliminarProducto(id) {
+    if (!confirm("¿Estás seguro de eliminar este producto?")) return;
+    const token = localStorage.getItem('jwtToken');
+    try {
+        const response = await fetch(`/admin/productos/eliminar/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + (token ? token.trim() : "") }
+        });
+        const resultado = await response.json();
+        if (response.ok && resultado.status === "success") {
+            alert("Producto eliminado.");
+            window.location.reload();
+        } else {
+            alert("Error al eliminar: " + resultado.message);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+// Filtros
+function aplicarFiltrosCompleto() {
+    const textoBusqueda = document.getElementById('filtroTexto')?.value.toLowerCase().trim() || "";
+    const categoriaSeleccionada = document.getElementById('filtroCategoria')?.value.toLowerCase() || "";
+    const stockSeleccionado = document.getElementById('filtroStock')?.value || "";
+    const filas = document.querySelectorAll('.producto-fila');
+
+    filas.forEach(fila => {
+        const nombre = fila.getAttribute('data-nombre')?.toLowerCase() || "";
+        const cat = fila.getAttribute('data-categoria')?.toLowerCase() || "";
+        const stock = parseInt(fila.getAttribute('data-stock')) || 0;
+
+        let coincide = nombre.includes(textoBusqueda) &&
+                       (categoriaSeleccionada === "" || cat === categoriaSeleccionada);
+
+        if (stockSeleccionado === "agotado") coincide &= (stock === 0);
+        else if (stockSeleccionado === "ultimas") coincide &= (stock > 0 && stock <= 3);
+        else if (stockSeleccionado === "disponible") coincide &= (stock > 3);
+
+        fila.style.display = coincide ? "" : "none";
+    });
+}
+
+document.getElementById('filtroTexto')?.addEventListener('input', aplicarFiltrosCompleto);
+document.getElementById('filtroCategoria')?.addEventListener('change', aplicarFiltrosCompleto);
+document.getElementById('filtroStock')?.addEventListener('change', aplicarFiltrosCompleto);
+</script>
+</body>
+</html>

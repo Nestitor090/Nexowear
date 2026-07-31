@@ -1,19 +1,19 @@
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org" lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Productos - NEXO WEAR</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    </head>
-    <body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - NEXO WEAR</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
 
-       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
     <div class="container">
         <a class="navbar-brand fw-bold" th:href="@{/}"><i class="bi bi-lightning-charge"></i> NEXO WEAR</a>
-        
+
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <div class="hamburger-icon">
                 <span></span>
@@ -24,11 +24,13 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center gap-2">
-                <li class="nav-item"><a th:href="@{/}" class="nav-link active">Inicio</a></li>
-                <li class="nav-item"><a th:href="@{/productos}" class="nav-link">Productos</a></li>
+                <li class="nav-item"><a th:href="@{/}" class="nav-link">Inicio</a></li>
+                <li class="nav-item"><a th:href="@{/productos/mujer}" class="nav-link active">Mujer</a></li>
+                <li class="nav-item"><a th:href="@{/productos/hombre}" class="nav-link">Hombre</a></li>
+                <li class="nav-item"><a th:href="@{/productos/ninos}" class="nav-link">Niños</a></li>
                 <li class="nav-item"><a th:href="@{/contacto}" class="nav-link">Contacto</a></li>
-                
-                <!-- ICONO DEL CARRITO (integrado aquí) -->
+
+                <!-- ICONO DEL CARRITO -->
                 <li class="nav-item">
                     <a class="nav-link position-relative" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
                         <i class="bi bi-cart3 fs-4 text-white"></i>
@@ -36,7 +38,7 @@
                     </a>
                 </li>
 
-                <!-- BOTONES DE LOGIN/USUARIO -->
+                <!-- BOTONES DE LOGIN -->
                 <li class="nav-item">
                     <div class="ms-auto d-flex align-items-center gap-2">
                         <button type="button" id="btnInicioSesion" class="btn btn-outline-light ms-3" data-bs-toggle="modal" data-bs-target="#loginModal">
@@ -44,7 +46,7 @@
                         </button>
 
                         <div id="userProfile" class="dropdown" style="display: none;">
-                            <div class="avatar-circle" id="userAvatar" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; width: 40px; height: 40px; background-color: #007bff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            <div class="avatar-circle" id="userAvatar" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; width: 40px; height: 40px; background-color: #cc211b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
                                 <span id="userInitial"></span>
                             </div>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
@@ -60,142 +62,318 @@
     </div>
 </nav>
 
-<!-- OFF CANVAS CARRITO (colócalo FUERA del nav, antes de cerrar body) -->
-<div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasCarrito">
-    <div class="offcanvas-header border-bottom border-secondary">
-        <h5 class="fw-bold m-0">MI CARRITO</h5>
+<!-- OFF CANVAS CARRITO PREMIUM (Estilo Limpio) -->
+<div class="offcanvas offcanvas-end bg-white text-dark" tabindex="-1" id="offcanvasCarrito" style="border-radius: 0;">
+    <!-- Cabecera en color Negro -->
+    <div class="offcanvas-header bg-black text-white py-3">
+        <h5 class="fw-bold m-0" style="letter-spacing: 1px; font-size: 16px;">TU CARRITO</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body">
-        <div id="listaCarrito">
-            <p class="text-center text-muted">Tu carrito está vacío.</p>
+
+    <!-- Cuerpo del Carrito -->
+    <div class="offcanvas-body d-flex flex-column p-0">
+        <!-- Lista de productos dinamizada por JS -->
+        <div id="listaCarrito" class="flex-grow-1 p-3" style="overflow-y: auto;">
+            <p class="text-center text-muted py-5">Tu carrito está vacío.</p>
         </div>
-        <div class="border-top border-secondary pt-3 mt-3">
-            <div class="d-flex justify-content-between">
-                <span>Total:</span>
-                <span id="totalCarrito" class="fw-bold text-primary">S/ 0.00</span>
+
+        <!-- Footer del Carrito con Botón Rojo -->
+        <div class="p-3 bg-white border-top border-light">
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Subtotal</span>
+                <span id="subtotalCarrito" class="fw-bold">S/ 0.00</span>
             </div>
-            <button class="btn btn-primary w-100 mt-3 rounded-pill" onclick="procesarCompra()">PAGAR AHORA</button>
+            <div class="d-flex justify-content-between mb-4 pb-2 border-bottom">
+                <span class="fw-bold small text-uppercase" style="letter-spacing: 0.5px;">Total</span>
+                <span id="totalCarrito" class="fw-bold fs-5">S/ 0.00</span>
+            </div>
+            <button class="btn btn-success" onclick="abrirModalFinalizar()">Finalizar Compra</button>
         </div>
     </div>
 </div>
+
+
+<!-- MODAL DE LOGUEO Y REGISTRO PREMIUM -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg">
-            <div class="modal-body p-5">
-                <button type="button" class="btn-close float-end" data-bs-dismiss="modal"></button>
-                
+    <div class="modal-dialog modal-dialog-centered modal-custom-premium">
+        <div class="modal-content input-cuadrado-premium">
+            <div class="modal-body p-5 position-relative">
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+
+                <!-- SECCIÓN LOGIN -->
                 <div id="loginSection">
-                    <h5 class="text-muted">BIENVENIDO A</h5>
-                    <h2 class="fw-bold mb-4">NEXO WEAR</h2>
+                    <h5 class="subtitulo-modal">BIENVENIDO A</h5>
+                    <h2 class="titulo-modal mb-4">NEXO WEAR</h2>
                     <form id="loginForm">
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="usuario" placeholder="Usuario" required>
+                            <input type="text" class="form-control input-premium" id="usuario" name="usuario" placeholder="USUARIO" required>
                         </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
+                        <div class="mb-4">
+                            <input type="password" class="form-control input-premium" id="password" name="password" placeholder="CONTRASEÑA" required>
                         </div>
-                        <button type="submit" class="btn btn-dark w-100 py-2">INGRESAR</button>
+                        <button type="submit" class="btn btn-modal-premium w-100">INGRESAR</button>
                     </form>
-                    <p class="mt-3 text-center small">
-                        ¿No tienes cuenta? <span class="text-primary fw-bold" onclick="mostrarRegistro()" style="cursor:pointer;">Regístrate</span>
+                    <p class="mt-4 text-center switch-modal-text">
+                        ¿No tienes cuenta? <span class="link-modal-action" onclick="mostrarRegistro()">Regístrate</span>
                     </p>
                 </div>
 
+                <!-- SECCIÓN REGISTRO (EXPANDIDA Y PROFESIONAL) -->
                 <div id="registerSection" style="display:none;">
-                    <h5 class="text-muted">CREAR CUENTA</h5>
-                    <h2 class="fw-bold mb-4">NEXO WEAR</h2>
+                    <h5 class="subtitulo-modal">CREAR CUENTA</h5>
+                    <h2 class="titulo-modal mb-4">NEXO WEAR</h2>
                     <form id="registerForm">
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="newUser" placeholder="Nuevo Usuario" required>
+                            <input type="text" class="form-control input-premium" id="newNombre" name="nombre" placeholder="NOMBRE COMPLETO" required>
                         </div>
                         <div class="mb-3">
-                            <input type="password" class="form-control" id="newPassword" placeholder="Nueva Contraseña" required>
+                            <input type="email" class="form-control input-premium" id="newEmail" name="email" placeholder="CORREO ELECTRÓNICO" required>
                         </div>
-                        <button type="submit" class="btn btn-dark w-100 py-2">REGISTRARSE</button>
+                        <div class="mb-3">
+                            <input type="text" class="form-control input-premium" id="newUser" name="username" placeholder="NOMBRE DE USUARIO" required>
+                            <small class="text-muted d-block mt-1" style="font-size: 10px; letter-spacing: 0.5px;">
+                                * Solo letras, números y guiones bajos (4-20 caracteres).
+                            </small>
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" class="form-control input-premium" id="newPassword" name="password" placeholder="CONTRASEÑA" required>
+                            <small class="text-muted d-block mt-1" style="font-size: 10px; letter-spacing: 0.5px; line-height: 1.3;">
+                                * Mínimo 8 caracteres (Debe incluir Mayúscula, Minúscula, Número y un símbolo especial).
+                            </small>
+                        </div>
+                        <button type="submit" class="btn btn-modal-premium w-100">REGISTRARSE</button>
                     </form>
-                    <p class="mt-3 text-center small">
-                        <span class="text-muted" onclick="mostrarLogin()" style="cursor:pointer;">Volver al login</span>
+                    <p class="mt-4 text-center switch-modal-text">
+                        <span class="link-modal-back" onclick="mostrarLogin()">Volver al login</span>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div style="height: 80px;"></div>
+<!-- ================= SECCIÓN CATÁLOGO CON FILTROS LATERALES ================= -->
+<section class="container-fluid px-4 mt-5 mb-5">
 
-    <section class="container mt-5 mb-5">
-    <h2 class="text-center mb-5 fw-bold">COLECCIÓN</h2>
+    <!-- 🌟 NUEVO TÍTULO PREMIUM SECCIÓN MUJER -->
+    <div class="mb-5 border-bottom pb-3">
+        <h6 class="text-muted text-uppercase tracking-widest fw-semibold m-0" style="font-size: 11px; letter-spacing: 3px;">NEXO WEAR</h6>
+        <h2 class="text-start fw-bold text-uppercase m-0" style="font-size: 28px; letter-spacing: 1px;"
+            th:text="${categoriaActual != null ? 'SECCIÓN ' + categoriaActual : 'SECCIÓN MUJER / NUEVA COLECCIÓN'}">
+            SECCIÓN MUJER / NUEVA COLECCIÓN
+        </h2>
+    </div>
 
     <div class="row g-4">
-        <div class="col-md-4" th:each="prod : ${listaProductos}">
-            <div class="card producto h-100 shadow-sm border-0">
-                <div class="producto-img">
-                    <img th:src="@{'/img/' + ${prod.imagen}}" class="card-img-top" th:alt="${prod.nombre}">
-                </div>
-                <div class="card-body text-center">
-                    <h5 th:text="${prod.nombre}">Nombre del Producto</h5>
-                    <p th:text="'S/ ' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">S/ 0.00</p>
-                    <button class="btn btn-dark" 
-        th:onclick="'agregarAlCarrito(' + ${prod.id} + ')'">
-    COMPRAR
-</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(listaProductos)}">
-            <i class="bi bi-box-seam fs-1 text-muted"></i>
-            <p class="mt-3 text-muted">Próximamente nuevas prendas en nuestra colección.</p>
-        </div>
-    </div>
-</section>
 
-    <footer class="bg-black text-white pt-5 pb-4 mt-5">
-        <div class="container text-center text-md-start">
-            <div class="row">
-                <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mt-3">
-                    <h5 class="text-uppercase mb-4 fw-bold">NEXO WEAR</h5>
-                    <p class="small text-muted">Elevando el estilo urbano con diseños unisex y minimalistas.</p>
-                </div>
-
-                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                    <h6 class="text-uppercase mb-4 fw-bold">Explorar</h6>
-                    <p><a th:href="@{/}" class="text-white text-decoration-none small">Inicio</a></p>
-                    <p><a th:href="@{/productos}" class="text-white text-decoration-none small">Productos</a></p>
-                    <p><a th:href="@{/contacto}" class="text-white text-decoration-none small">Contacto</a></p>
-                </div>
-
-                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-                    <h6 class="text-uppercase mb-4 fw-bold">Síguenos</h6>
-                    <div class="d-flex justify-content-center justify-content-md-start gap-3">
-                        <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="bi bi-tiktok"></i></a>
+        <!-- ================= COLUMNA IZQUIERDA: FILTROS ================= -->
+        <div class="col-md-3">
+            <div class="accordion accordion-flush border-top" id="accordionFiltros">
+                <!-- Filtros (Se mantienen igual) -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold text-uppercase" style="font-size: 12px; letter-spacing: 1px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTipo">Tipo de producto</button>
+                    </h2>
+                    <div id="collapseTipo" class="accordion-collapse collapse" data-bs-parent="#accordionFiltros">
+                        <div class="accordion-body px-1 small">
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="tipo" value="blusa" id="fBlusa"><label class="form-check-label" for="fBlusa">Blusas</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="tipo" value="polo" id="fPolo"><label class="form-check-label" for="fPolo">Polos</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="tipo" value="casaca" id="fCasaca"><label class="form-check-label" for="fCasaca">Casacas</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="tipo" value="chompa" id="fChompa"><label class="form-check-label" for="fChompa">Chompas</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="tipo" value="vestido" id="fVestido"><label class="form-check-label" for="fVestido">Vestidos</label></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3 small">
-                    <h6 class="text-uppercase mb-4 fw-bold">Contacto</h6>
-                    <p><i class="bi bi-house-door me-2"></i> Lima, Perú</p>
-                    <p><i class="bi bi-envelope me-2"></i> info@nexowear.com</p>
-                    <p><i class="bi bi-telephone me-2"></i> +51 999 888 777</p>
+                <!-- Filtro: Color -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold text-uppercase" style="font-size: 12px; letter-spacing: 1px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseColor">
+                            Color
+                        </button>
+                    </h2>
+                    <div id="collapseColor" class="accordion-collapse collapse" data-bs-parent="#accordionFiltros">
+                        <div class="accordion-body px-1 small">
+                            <!-- Agregado name="color" -->
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="color" value="negro" id="cNegro"><label class="form-check-label" for="cNegro">Negro</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="color" value="rojo" id="cRojo"><label class="form-check-label" for="cRojo">Rojo</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="color" value="blanco" id="cBlanco"><label class="form-check-label" for="cBlanco">Blanco</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="color" value="marron" id="cMarron"><label class="form-check-label" for="cMarron">Marrón</label></div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Filtro: Talla -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold text-uppercase" style="font-size: 12px; letter-spacing: 1px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTalla">
+                            Talla
+                        </button>
+                    </h2>
+                    <div id="collapseTalla" class="accordion-collapse collapse" data-bs-parent="#accordionFiltros">
+                        <div class="accordion-body px-1 small">
+                            <!-- Agregado name="talla" -->
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="talla" value="S" id="tS"><label class="form-check-label" for="tS">S</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="talla" value="M" id="tM"><label class="form-check-label" for="tM">M</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" name="talla" value="L" id="tL"><label class="form-check-label" for="tL">L</label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ordenamiento (Siempre abierto) -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button fw-bold text-uppercase" style="font-size: 12px; letter-spacing: 1px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrden">
+                            Ordenar por
+                        </button>
+                    </h2>
+                    <div id="collapseOrden" class="accordion-collapse collapse show">
+                        <div class="accordion-body px-1 small">
+                            <div class="form-check mb-2"><input class="form-check-input order-radio" type="radio" name="orden" id="o1" value="menor-mayor"><label class="form-check-label" for="o1">Precio, menor a mayor</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input order-radio" type="radio" name="orden" id="o2" value="mayor-menor"><label class="form-check-label" for="o2">Precio, mayor a menor</label></div>
+                            <div class="form-check mb-2"><input class="form-check-input order-radio" type="radio" name="orden" id="o3" value="reciente" checked><label class="form-check-label" for="o3">Fecha: reciente a antiguo</label></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </div>
 
-            <hr class="mb-4 mt-5 border-secondary">
+        <!-- ================= COLUMNA DERECHA: GRILLA DE ROPA ================= -->
+        <div class="col-md-9">
+            <div class="row g-4" id="contenedorProductos">
 
-            <div class="row align-items-center">
-                <div class="col-md-7 col-lg-8">
-                    <p class="small mb-0 text-muted">© 2026 <strong>NEXO WEAR</strong>. Todos los derechos reservados.</p>
+                <!-- 🌟 Tarjeta de Producto -->
+                <div class="col-md-4 col-sm-6 producto-item"
+                     th:each="prod : ${listaProductos}"
+                     th:data-categoria="${prod.categoria != null ? prod.categoria.toLowerCase() : ''}"
+                     th:data-color="${prod.color != null ? prod.color.toLowerCase() : ''}"
+                     th:data-talla="${prod.talla}"
+                     th:data-precio="${prod.precio}"
+                     th:data-id="${prod.id}">
+
+                    <div class="card producto h-100 border-0 position-relative">
+
+                        <!-- 🌟 CONTENEDOR DE IMAGEN CON ETIQUETAS -->
+                        <div class="producto-img bg-light position-relative" style="aspect-ratio: 3/4; overflow: hidden;">
+
+                            <!-- ETIQUETAS DE STOCK -->
+                            <div class="position-absolute top-0 start-0 m-2 z-3 d-flex flex-column gap-1">
+                                <!-- Etiqueta Agotado -->
+                                <span th:if="${prod.stock == null || prod.stock == 0}"
+                                      class="badge bg-danger fw-bold text-uppercase px-2 py-1 shadow-sm"
+                                      style="font-size: 10px; letter-spacing: 0.5px;">Agotado</span>
+
+                                <!-- Etiqueta Últimas unidades -->
+                                <span th:if="${prod.stock > 0 && prod.stock <= 3}"
+                                      class="badge bg-warning text-dark fw-bold text-uppercase px-2 py-1 shadow-sm"
+                                      style="font-size: 10px; letter-spacing: 0.5px;">
+                            <i class="bi bi-exclamation-triangle-fill"></i> ¡Últimos <span th:text="${prod.stock}"></span>!
+                        </span>
+                            </div>
+
+                            <img th:src="@{'/img/' + ${prod.imagen}}" class="card-img-top h-100 w-100" style="object-fit: cover;" th:alt="${prod.nombre}">
+                        </div>
+
+                        <div class="card-body p-2 text-start">
+                            <h6 class="m-0 fw-bold text-dark" style="font-size: 13px;" th:text="${prod.nombre}">Nombre</h6>
+                            <div class="fw-semibold text-muted mt-1" style="font-size: 13px;" th:text="'S/. ' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">S/. 0.00</div>
+
+                            <button class="btn btn-dark btn-sm w-100 mt-2 rounded-0 text-uppercase fw-bold"
+                                    style="font-size: 11px; letter-spacing: 1px;"
+                                    th:onclick="'agregarAlCarrito(' + ${prod.id} + ', ' + ${prod.stock != null ? prod.stock : 0} + ')'"
+                                    th:disabled="${prod.stock == null || prod.stock <= 0}">
+
+                                <span th:text="${prod.stock == null || prod.stock <= 0 ? 'Agotado' : 'Comprar'}">Comprar</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-5 col-lg-4 text-center text-md-end">
-                    <small class="text-muted">Desarrollado por Payazin</small>
+
+                <!-- Mensaje de lista vacía -->
+                <div class="col-12 text-center py-5 id-vacio" th:if="${#lists.isEmpty(listaProductos)}" style="display: none;">
+                    <i class="bi bi-box-seam fs-1 text-muted"></i>
+                    <p class="mt-3 text-muted">Próximamente nuevas prendas en nuestra colección.</p>
                 </div>
             </div>
         </div>
-    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/scripts.js}"></script>
-    </body>
-    </html>
+    </div>
+</section>
+
+<div class="modal fade" id="modalFinalizarCompra" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Finalizar Compra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Productos a comprar:</h6>
+                <ul id="listaProductosCompra"></ul>
+
+                <hr>
+                <h6>Datos de entrega y pago:</h6>
+                <input type="text" id="direccion" class="form-control mb-2" placeholder="Dirección de entrega">
+                <input type="text" id="tarjeta" class="form-control mb-2" placeholder="Número de tarjeta">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <!-- Botón verde de confirmación -->
+                <button type="button" class="btn btn-success" onclick="procesarCompra()">Confirmar Compra</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FOOTER ACTUALIZADO -->
+<footer class="bg-black text-white pt-5 pb-4 mt-5">
+    <div class="container text-center text-md-start">
+        <div class="row">
+            <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 fw-bold">NEXO WEAR</h5>
+                <p class="small text-muted">Elevando el estilo urbano con diseños unisex y minimalistas.</p>
+            </div>
+
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                <h6 class="text-uppercase mb-4 fw-bold">Explorar</h6>
+                <p><a th:href="@{/}" class="text-white text-decoration-none small">Inicio</a></p>
+                <p><a th:href="@{/productos/mujer}" class="text-white text-decoration-none small">Mujer</a></p>
+                <p><a th:href="@{/productos/hombre}" class="text-white text-decoration-none small">Hombre</a></p>
+                <p><a th:href="@{/productos/ninos}" class="text-white text-decoration-none small">Niños</a></p>
+                <p><a th:href="@{/contacto}" class="text-white text-decoration-none small">Contacto</a></p>
+            </div>
+
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                <h6 class="text-uppercase mb-4 fw-bold">Síguenos</h6>
+                <div class="d-flex justify-content-center justify-content-md-start gap-3">
+                    <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white fs-5"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3 small">
+                <h6 class="text-uppercase mb-4 fw-bold">Contacto</h6>
+                <p><i class="bi bi-house-door me-2"></i> Lima, Perú</p>
+                <p><i class="bi bi-envelope me-2"></i> info@nexowear.com</p>
+                <p><i class="bi bi-telephone me-2"></i> +51 999 888 777</p>
+            </div>
+        </div>
+
+        <hr class="mb-4 mt-5 border-secondary">
+
+        <div class="row align-items-center">
+            <div class="col-md-7 col-lg-8">
+                <p class="small mb-0 text-muted">© 2026 <strong>NEXO WEAR</strong>. Todos los derechos reservados.</p>
+            </div>
+            <div class="col-md-5 col-lg-4 text-center text-md-end">
+                <small class="text-muted">Desarrollado por Payazin</small>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

@@ -26,9 +26,25 @@ public class ProductoService {
     public List<Producto> buscarPorNombre(String nombre) {
         return productoRepo.findByNombreContainingIgnoreCase(nombre);
     }
-    
+
     // NUEVO: Guardar o actualizar (útil si luego creas un panel de admin)
     public void guardar(Producto producto) {
         productoRepo.save(producto);
+    }
+
+    // 🌟 NUEVO MÉTODO: Eliminar producto por ID (Para el AdminController)
+    public void eliminar(Long id) {
+        productoRepo.deleteById(id);
+    }
+
+    public List<Producto> obtenerDestacados() {
+        return productoRepo.findByDestacadoTrue(); // Cambio a productoRepo
+    }
+
+    public List<Producto> obtenerNuevos() {
+        return productoRepo.findByNuevoTrue(); // Cambio a productoRepo
+    }
+    public Producto obtenerPorId(Long id) {
+        return productoRepo.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
     }
 }

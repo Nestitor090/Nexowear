@@ -12,17 +12,142 @@ body {
 section.container {
     flex: 1;
 }
+
+/* --- DISEÑO DE MODAL PREMIUM (AUTENTICACIÓN) --- */
+
+.modal-custom-premium .modal-content {
+    border-radius: 0px !important; /* Puntas totalmente rectas */
+    border: 1px solid #111 !important;
+    background-color: #ffffff;
+}
+
+/* Títulos y Subtítulos */
+.subtitulo-modal {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #666666;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.titulo-modal {
+    font-size: 26px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Campos de entrada rectos y elegantes */
+.input-premium {
+    border-radius: 0px !important; /* Cuadrados */
+    border: 1px solid #cccccc !important;
+    padding: 14px 18px !important;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    background-color: #fafafa !important;
+    color: #000000;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.input-premium:focus {
+    background-color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+}
+
+/* Botón de acción del Modal */
+.btn-modal-premium {
+    border-radius: 0px !important;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background-color: #000000 !important;
+    border: 1px solid #000000 !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.btn-modal-premium:hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Enlaces de intercambio inferior */
+.switch-modal-text {
+    font-size: 13px;
+    color: #444;
+}
+
+.link-modal-action {
+    color: #000000;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+}
+
+.link-modal-back {
+    color: #777777;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 11px;
+    transition: color 0.2s;
+}
+
+.link-modal-back:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+
+/* Botón de cerrar personalizado (X) */
+.btn-close-custom {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    color: #000000;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-close-custom:hover {
+    opacity: 1;
+}
 /* --- NAVBAR (Diseño Elegante) --- */
 .navbar {
-    background-color: #000 !important;
-    padding: 12px 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background-color: transparent; /* 👈 Por defecto empieza transparente arriba */
+    padding: 18px 0;
+    box-shadow: none;
+    transition: background-color 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease; /* Transición suave */
+}
+
+/* Efecto 1: Cuando pones el cursor encima (hover) estando arriba */
+.navbar:hover {
+    background-color: #000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+/* Efecto 2: Cuando se hace scroll hacia abajo (clase activada por JavaScript) */
+.navbar.scrolled {
+    background-color: #000;
+    padding: 12px 0; /* Se hace un poquito más delgado al bajar */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 
 .navbar-brand {
     font-size: 22px;
     letter-spacing: 3px;
     text-transform: uppercase;
+    color: #fff !important; /* Asegura que se vea sobre el fondo transparente */
 }
 
 .nav-link {
@@ -30,19 +155,102 @@ section.container {
     text-transform: uppercase;
     letter-spacing: 1px;
     padding: 8px 15px !important;
-    transition: 0.3s;
+
+    /* Nuevos estilos para el texto */
+    color: #ffffff !important;      /* Blanco puro al 100% */
+    font-weight: 700;               /* Más grosor (puedes usar 600 o 700) */
+
+    position: relative;             /* Necesario para posicionar la línea */
+    transition: opacity 0.3s;
+}
+
+/* Crear la línea debajo del texto (oculta por defecto) */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;                    /* Grosor de la línea */
+    bottom: 0;                      /* Pegada al borde inferior del enlace */
+    left: 0;
+    background-color: #ffffff;      /* Color de la línea (blanco) */
+    transform: scaleX(0);           /* Empieza midiendo 0 (invisible) */
+    transform-origin: bottom center;/* Crece desde el centro (cámbialo a 'bottom left' si prefieres que inicie en la izquierda) */
+    transition: transform 0.3s ease-in-out; /* Animación fluida */
+}
+
+/* Mostrar la línea cuando pasas el cursor (hover) */
+.nav-link:hover::after {
+    transform: scaleX(1);           /* Se expande al 100% del ancho del texto */
 }
 
 .nav-link:hover {
-    color: #fff !important;
-    opacity: 0.7;
+    opacity: 1 !important;          /* Evita que se vuelva opaco al pasar el mouse */
+}
+
+/* --- CONFIGURACIÓN E-COMMERCE PREMIUM PARA CARRITO --- */
+.cart-item {
+    display: flex;
+    gap: 15px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+
+
+/* Contenedor e Imagen del producto en el carrito */
+.cart-item-img {
+    width: 85px;
+    height: 110px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.cart-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Área de descripción */
+.cart-item-detalles {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Selector dropdown de cantidad */
+.form-select-cantidad {
+    width: 75px;
+    padding: 3px 6px;
+    font-size: 13px;
+    border: 1px solid #333;
+    border-radius: 0px !important;
+    background-color: #fff;
+    color: #000;
+}
+
+/* Botón Rojo de Pago */
+.btn-finalizar-compra {
+    width: 100%;
+    background-color: #cc211b !important; /* Rojo de la imagen */
+    color: #ffffff !important;
+    border: none;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 0px !important;
+    transition: background-color 0.2s ease;
+    text-transform: uppercase;
+}
+.btn-finalizar-compra:hover {
+    background-color: #a61914 !important;
 }
 
 /* --- BANNER PRINCIPAL --- */
 .banner {
-    min-height: 60vh; 
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('https://images.unsplash.com/photo-1521334884684-d80222895322?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    min-height: 100vh;
+    background: url('../img/banner.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,78 +287,199 @@ section.container {
     box-shadow: none;
 }
 
-/* --- PRODUCTOS (Cards) --- */
-.producto {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+//* --- PRODUCTOS (Premium E-Commerce Cards) --- */
+ .producto {
+     display: flex;
+     flex-direction: column;
+     height: 100%;
+     background-color: #fff;
+     border-radius: 0px !important; /* Estilo puntiagudo minimalista */
+     border: none;
+     position: relative;
+     overflow: hidden;
+     transition: box-shadow 0.4s ease;
+ }
 
-.producto:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 15px 35px rgba(0,0,0,0.15);
-}
+ .producto:hover {
+     /* Sombra mucho más sutil y sofisticada */
+     box-shadow: 0px 20px 40px rgba(0,0,0,0.06);
+ }
 
-.producto-img {
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-    background-color: #f8f9fa;
-    border-radius: 15px 15px 0 0;
-}
+ .producto-img {
+     width: 100%;
+     height: 550px;
+     overflow: hidden;
+     background-color: #fcfcfc;
+     border-radius: 0px;
+     position: relative;
+ }
 
-.producto-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    transition: transform 0.6s ease;
-}
-.producto:hover .producto-img img {
-    transform: scale(1.05);
-}
+ .producto-img img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     object-position: top center;
+     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Zoom ultra suave */
+ }
 
-/* Alineación de los botones */
-.card-body {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-/* --- BOTONES --- */
-.btn-dark {
-    border-radius: 25px;
-    padding: 10px 20px;
-    text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    transition: 0.3s;
-}
+ .producto:hover .producto-img img {
+     transform: scale(1.03); /* Un zoom más sutil es más elegante */
+ }
 
-.btn-light {
-    border-radius: 30px;
-    padding: 12px 30px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
+ /* Cuerpo de la tarjeta */
+ .card-body {
+     display: flex;
+     flex-direction: column;
+     flex-grow: 1;
+     padding: 20px 10px !important; /* Alineado limpio con los bordes */
+     background: #fff;
+     z-index: 2;
+ }
 
-.btn-outline-light {
-    border-radius: 25px;
-    padding: 8px 20px;
-    font-size: 13px;
-    border-width: 2px;
-}
+ /* Detalles del Texto */
+ .card-body h5 {
+     font-size: 15px;
+     font-weight: 500;
+     letter-spacing: 0.5px;
+     text-transform: uppercase;
+     color: #111;
+     margin-bottom: 6px;
+ }
+
+ /* El precio (en tu HTML es .text-muted, cámbialo si deseas por .producto-precio) */
+ .card-body .text-muted {
+     font-size: 14px;
+     font-weight: 600;
+     color: #222 !important; /* Precio más oscuro y legible */
+     margin-bottom: 15px;
+ }
+
+ /* --- BOTONES PREMIUM (Efecto Deslizar) --- */
+ .btn-dark {
+     border-radius: 0px !important; /* Puntas totalmente cuadradas */
+     padding: 13px 20px;
+     text-transform: uppercase;
+     font-size: 12px;
+     font-weight: 600;
+     letter-spacing: 2px; /* Mayor espacio entre letras */
+     background-color: #000 !important;
+     border: 1px solid #000 !important;
+     color: #fff !important;
+
+     /* Animación de subida */
+     transform: translateY(10px);
+     opacity: 0;
+     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+ }
+
+ /* Cuando el usuario pasa el cursor sobre la tarjeta, el botón aparece mágicamente */
+ .producto:hover .btn-dark {
+     transform: translateY(0);
+     opacity: 1;
+ }
+
+ /* Hover propio del botón */
+ .btn-dark:hover {
+     background-color: #fff !important;
+     color: #000 !important;
+     border-color: #000 !important;
+ }
+
+ /* Resto de botones limpios */
+ .btn-light {
+     border-radius: 0px;
+     padding: 12px 30px;
+     font-weight: 600;
+     font-size: 13px;
+     letter-spacing: 1px;
+     text-transform: uppercase;
+     border: 1px solid #fff;
+ }
+
+ .btn-outline-light {
+     border-radius: 0px;
+     padding: 10px 25px;
+     font-size: 12px;
+     letter-spacing: 1px;
+     border-width: 1px;
+     text-transform: uppercase;
+ }
 
 /* --- FOOTER --- */
 footer {
-    background-color: #000;
-    color: #fff;
+    background-color: #ffffff;
+    color: #222222;
+    margin-top: 80px !important; /* 👈 Esto empujará el footer hacia abajo creando el aire necesario */
+ }
+
+/* Marca Nexo Wear principal */
+.footer-brand {
+    font-size: 18px;
     letter-spacing: 1px;
-    margin-top: auto; /* Empuje final para asegurar la posición */
+    color: #111;
 }
 
-footer .text-muted {
-    color: #666 !important;
+/* Títulos con la línea gris horizontal debajo */
+.footer-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #111;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Listas de navegación limpias */
+.footer-menu li {
+    margin-bottom: 12px;
+}
+
+.footer-menu a {
+    color: #333333;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-menu a:hover {
+    color: #cc211b; /* Rojo corporativo en hover */
+}
+
+/* Textos secundarios grises */
+.text-muted-custom {
+    color: #555555;
+}
+
+/* Redes Sociales en círculos negros y limpios */
+.social-icon {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #222;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #222;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.social-icon:hover {
+    background-color: #222;
+    color: #fff;
+}
+
+/* Textos grises legibles dentro de la franja negra */
+.text-muted-light {
+    color: #aaa !important;
+}
+
+/* Líneas divisorias verticales entre columnas */
+@media (min-width: 768px) {
+    .border-end-custom {
+        border-right: 1px solid #e5e5e5;
+    }
 }
 
 /* --- RESPONSIVIDAD EXTRA --- */
@@ -257,4 +586,327 @@ footer .text-muted {
         margin-bottom: 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
+}
+
+
+/* --- BANNER DE PROMOCIÓN PREMIUM --- */
+.banner-promo-img {
+    object-fit: cover;
+    object-position: center; /* Centra la imagen para que el recorte no corte los textos */
+    max-height: 320px;       /* 👈 Cambia este número (por ejemplo a 300px o 320px) hasta que quede a la altura que buscas */
+    width: 100%;
+    display: block;
+}
+
+/* --- BLOQUES DE CATEGORÍAS PREMIUM --- */
+.bloque-categoria {
+    overflow: hidden;
+    height: 500px; /* Altura ideal en Desktop para que luzca tipo revista */
+}
+
+.img-bloque {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Efecto Zoom en la foto al pasar el mouse */
+.bloque-categoria:hover .img-bloque {
+    transform: scale(1.05);
+}
+
+/* Capa oscura translúcida encima de la foto para leer bien los textos */
+.bloque-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35); /* Ajusta a 0.45 si tus fotos son muy claras */
+    padding: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.bloque-categoria:hover .bloque-overlay {
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+/* Tipografías y espacios */
+.tracking-wider {
+    letter-spacing: 3px;
+}
+.letter-spacing-1 {
+    letter-spacing: 1.5px;
+}
+
+/* Botón Recto Estilo Minimalista */
+.btn-bloque-premium {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 12px 30px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-bloque-premium:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Separador sutil en pantallas de computadora */
+@media (min-width: 768px) {
+    .border-start-md {
+        border-left: 2px solid #ffffff;
+    }
+}
+
+/* Adaptación para pantallas de celulares */
+@media (max-width: 767px) {
+    .bloque-categoria {
+        height: 380px; /* Reducimos la altura en móviles para que no quede eterno el scroll */
+    }
+}
+
+/* --- SECCIÓN NUEVA COLECCIÓN ACTUALIZADA --- */
+
+.card-nueva-coleccion {
+    border: none !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Contenedor vertical: Incrementamos la altura a 580px para que las tarjetas se vean más grandes y estilizadas */
+.contenedor-img-vertical {
+    position: relative !important; /* 🌟 OBLIGATORIO: Si esto falta, el botón se renderiza fuera de la tarjeta */
+    width: 100%;
+    height: 620px;
+    overflow: hidden;
+    background-color: #f2f2f2;
+}
+
+.img-nueva-col {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+/* Capa contenedora que centra el botón */
+.capa-boton-hover {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 10 !important; /* Lo pone por encima de la foto */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    /* Efecto de ocultado inicial controlado por opacidad */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    transition: background-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* El botón físico: Lo haremos BLANCO con letras NEGRAS para que rompa el fondo oscuro */
+.btn-comprar-nc {
+    display: inline-block !important;
+    opacity: 1 !important; /* 🌟 AÑADE ESTA LÍNEA para romper cualquier herencia de opacidad 0 */
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #ffffff !important;
+    padding: 12px 30px !important;
+    font-size: 13px !important;
+    letter-spacing: 1.5px !important;
+    font-weight: 700 !important;
+    border-radius: 0px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+
+    transform: translateY(20px) !important;
+    transition: transform 0.3s ease, background-color 0.2s ease, color 0.2s ease !important;
+}
+
+/* Hover propio del botón */
+.btn-comprar-nc:hover {
+    background-color: #000000 !important; /* Se vuelve negro al pasar el mouse encima de él */
+    color: #ffffff !important;            /* Texto blanco */
+    border-color: #000000 !important;
+}
+
+/* --- DISPARADORES HOVER AL PASAR EL CURSOR POR LA TARJETA --- */
+
+.card-nueva-coleccion:hover .img-nueva-col {
+    filter: brightness(0.65) !important; /* Oscurece la foto para dar un contraste brutal */
+    transform: scale(1.02);
+}
+
+.card-nueva-coleccion:hover .capa-boton-hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    background-color: rgba(0, 0, 0, 0.25) !important; /* Capa oscura intermedia */
+}
+
+/* El botón sube suavemente a su posición central */
+.card-nueva-coleccion:hover .btn-comprar-nc {
+    transform: translateY(0) !important;
+}
+/* Textos idénticos y limpios */
+.nombre-producto-nc {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #111111;
+    margin-bottom: 2px;
+    line-height: 1.4;
+    text-transform: none;
+}
+
+.precio-producto-nc {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #000000;
+    letter-spacing: 0.5px;
+}
+
+/* Ajuste responsive para pantallas móviles (Celulares) */
+@media (max-width: 767px) {
+    .contenedor-img-vertical {
+        height: 440px; /* Tamaño adaptado para que no ocupe toda la pantalla en móvil */
+    }
+    /* En móviles, el botón puede estar siempre visible o activarse al pulsar */
+    .capa-boton-hover {
+        opacity: 1;
+        visibility: visible;
+        background-color: transparent;
+        display: flex;
+        align-items: flex-end !important; /* Lo baja al pie de la foto en celulares */
+        padding-bottom: 15px;
+    }
+    .btn-comprar-nc {
+        transform: translateY(0);
+        padding: 8px 16px;
+        font-size: 11px;
+        background-color: rgba(0, 0, 0, 0.7) !important; /* Un poco translúcido en móvil */
+    }
+    .card-nueva-coleccion:hover .img-nueva-col {
+        transform: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-nueva-coleccion {
+        /* Añade un margen extra a los lados de cada tarjeta */
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+}
+/* --- SECCIÓN BANNER ESTÉTICO PANORÁMICO --- */
+
+/* --- SECCIÓN BANNER ESTÉTICO GIGANTE --- */
+.contenedor-banner-cierre {
+    width: 100%;
+    height: 820px; /* 🌟 MUCHO MÁS ALTO: Ajusta este número si lo quieres aún más imponente */
+    overflow: hidden;
+    background-color: #000;
+}
+
+.img-banner-cierre {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* --- AJUSTE EXCLUSIVO PARA EL FOOTER PEADO --- */
+footer {
+    position: relative; /* Necesario para posicionar la franja arriba */
+    background-color: #ffffff;
+    color: #222222;
+    margin-top: 0px !important; /* Totalmente pegado al banner */
+    padding-top: 40px; /* Le da espacio al contenido interno del footer para que no choque con la franja */
+}
+
+/* 🌟 Esta es la magia: Creamos una franja roja con la altura que desees */
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px; /* 👈 MODIFICA ESTO: Súbelo a 45px, 50px, etc., según qué tan alta quieras la franja */
+    background-color: #cc211b; /* El rojo de tu web */
+}
+/* Capa transparente por encima por si quieres centrar los textos flotantes */
+.overlay-banner-cierre {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.15); /* Filtro oscuro súper sutil para dar lectura al texto */
+}
+
+/* Ajuste responsivo para celulares */
+@media (max-width: 767px) {
+    .contenedor-banner-cierre {
+        height: 320px; /* Reducimos la altura en móviles para que mantenga proporción de franja */
+    }
+}
+
+/* --- ESTILOS PARA LOS FILTROS MINIMALISTAS --- */
+.accordion-item {
+    border-bottom: 1px solid #eaeaea !important;
+    background-color: transparent !important;
+}
+
+.accordion-button {
+    background-color: transparent !important;
+    color: #000000 !important;
+    padding: 15px 0px !important;
+    box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #000000 !important;
+}
+
+.accordion-button::after {
+    /* Reemplaza las flechas por símbolos más minimalistas si lo deseas */
+    background-size: 10px !important;
+}
+
+.form-check-input:checked {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+
+.form-check-label {
+    cursor: pointer;
+    color: #333;
+}
+
+/* Efecto hover elegante en las tarjetas de ropa */
+.card.producto {
+    transition: opacity 0.3s ease;
+}
+.card.producto:hover .producto-img img {
+    transform: scale(1.02);
+    transition: transform 0.4s ease;
+}
+
+.btn-comprar-nc:disabled {
+    background-color: #6c757d !important; /* Un gris neutro */
+    cursor: not-allowed;
+    opacity: 0.7;
 }
